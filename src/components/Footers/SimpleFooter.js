@@ -1,21 +1,3 @@
-/*!
-
-=========================================================
-* Argon Design System React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-design-system-react
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-/*eslint-disable*/
 import React from "react";
 // reactstrap components
 import {
@@ -36,16 +18,16 @@ class SimpleFooter extends React.Component {
         <footer className=" footer">
           <Container>
             <Row className=" row-grid align-items-center mb-5">
-              <Col lg="6">
+              <Col lg="12">
                 <h3 className=" text-primary font-weight-light mb-2">
-                  Thank you for supporting us!
+                  Таны өгсөн мэдээлэл өөр хэн нэгнийг хамгаалах болно.
                 </h3>
-                <h4 className=" mb-0 font-weight-light">
-                  Let's get in touch on any of these platforms.
-                </h4>
+                {/* <h4 className=" mb-0 font-weight-light">
+                  Бэлгийн хүчирхийллийг үл тэвчинэ.
+                </h4> */}
               </Col>
               <Col className="text-lg-center btn-wrapper" lg="6">
-                <Button
+                {/* <Button
                   className="btn-icon-only rounded-circle"
                   color="twitter"
                   href="https://twitter.com/creativetim"
@@ -100,7 +82,7 @@ class SimpleFooter extends React.Component {
                 </Button>
                 <UncontrolledTooltip delay={0} target="tooltip495507257">
                   Star on Github
-                </UncontrolledTooltip>
+                </UncontrolledTooltip> */}
               </Col>
             </Row>
             <hr />
@@ -109,17 +91,17 @@ class SimpleFooter extends React.Component {
                 <div className=" copyright">
                   © {new Date().getFullYear()}{" "}
                   <a
-                    href="https://www.creative-tim.com?ref=adsr-footer"
+                    href="#"
                     target="_blank"
                   >
-                    Creative Tim
+                    ГОЁ ХҮНҮҮС
                   </a>
                   .
                 </div>
               </Col>
               <Col md="6">
                 <Nav className=" nav-footer justify-content-end">
-                  <NavItem>
+                  {/* <NavItem>
                     <NavLink
                       href="https://www.creative-tim.com?ref=adsr-footer"
                       target="_blank"
@@ -150,7 +132,7 @@ class SimpleFooter extends React.Component {
                     >
                       MIT License
                     </NavLink>
-                  </NavItem>
+                  </NavItem> */}
                 </Nav>
               </Col>
             </Row>

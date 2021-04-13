@@ -27,10 +27,9 @@
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-design-system-react/issues"
   },
-  "homepage": "https://demos.creative-tim.com/argon-design-system-react/",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && gulp licenses",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "clean": "rm -rf node_modules/ && rm -rf package-lock.json",
