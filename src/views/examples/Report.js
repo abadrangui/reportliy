@@ -60,10 +60,11 @@ class Login extends React.Component {
                     <CardBody className="px-lg-5 py-lg-5">
                       <Form role="form">
                         <FormGroup className="mb-3">
+                          <div style={{ textAlign: 'right', fontSize: 11, }}>Яаж линк хуулах вэ?</div>
                           <InputGroup className="input-group-alternative">
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
-                                <i className="ni ni-email-83" />
+                                <i className="ni ni-single-02" />
                               </InputGroupText>
                             </InputGroupAddon>
                             <Input placeholder="Фэйсбүүк линк" type="text" />
@@ -73,7 +74,7 @@ class Login extends React.Component {
                           <InputGroup className="input-group-alternative">
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
-                                <i className="ni ni-email-83" />
+                                <i className="ni ni-collection" />
                               </InputGroupText>
                             </InputGroupAddon>
                             <Input placeholder="Тайлбар" type="textarea" />
@@ -92,7 +93,7 @@ class Login extends React.Component {
                             className="custom-control-label"
                             htmlFor=" customCheckLogin"
                           >
-                            <span>Remember me</span>
+                            <span>Өөрийн холбогдох мэдээллээ үлдээх</span>
                           </label>
                         </div>
                         <div className="text-center">
@@ -101,7 +102,7 @@ class Login extends React.Component {
                             color="primary"
                             type="button"
                           >
-                            Sign in
+                            Илгээх
                           </Button>
                         </div>
                       </Form>
@@ -114,7 +115,7 @@ class Login extends React.Component {
                         href="#pablo"
                         onClick={e => e.preventDefault()}
                       >
-                        <small>Forgot password?</small>
+                        <small>Бид хэн бэ?</small>
                       </a>
                     </Col>
                     <Col className="text-right" xs="6">
@@ -123,7 +124,7 @@ class Login extends React.Component {
                         href="#pablo"
                         onClick={e => e.preventDefault()}
                       >
-                        <small>Create new account</small>
+                        <small>Ямар арга хэмжээ авах вэ?</small>
                       </a>
                     </Col>
                   </Row>

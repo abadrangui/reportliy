@@ -74,7 +74,7 @@ const Uploader = ({ album }) => {
 
 
 
-      labelIdle='Зургаа чирч авчрах эсвэл <span class="filepond--label-action">Энд дарж үргэлжлүүлнэ үү!</span>'
+      labelIdle='Зургаа чирч авчрах эсвэл <span class="filepond--label-action">Энд дарж хуулах зургаа сонгоно уу!</span>'
       labelInvalidField='Энэ зургийн файл зураг биш байна'
       labelFileWaitingForSize='Файлын хэмжээг хүлээж байна'
       labelFileSizeNotAvailable='Хэт том файл байна'
