@@ -22,6 +22,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss?v1.1.0";
+import './index.css';
 
 import Index from "views/Index.js";
 import Landing from "views/examples/Landing.js";
@@ -29,6 +30,7 @@ import Login from "views/examples/Login.js";
 import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import Report from "views/examples/Report.js";
+import firebase from './firebase';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -53,7 +55,7 @@ ReactDOM.render(
 
       <Route path="/" exact component={Report} />
 
-      <Redirect to="/" />
+      {/* <Redirect to="/" /> */}
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")
