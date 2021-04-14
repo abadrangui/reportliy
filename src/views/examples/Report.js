@@ -17,6 +17,7 @@ import {
   Col
 } from "reactstrap";
 import ClipLoader from "react-spinners/ClipLoader";
+import axios from 'axios';
 
 // core components
 import DemoNavbar from "components/Navbar.js";
@@ -30,6 +31,10 @@ const Login = ({ user, loading }) => {
   const [photos, setPhotos] = useState([]);
   const [success, setSuccess] = useState(false);
   const [sending, setSending] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [title, setTitle] = useState('');
+  const [fbid, setfbid] = useState('');
+  const [checkErr, setCheckErr] = useState(false);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -66,6 +71,49 @@ const Login = ({ user, loading }) => {
     })
   }
 
+  const handleError = () => {
+    setCheckErr(true);
+    setChecking(false);
+  }
+
+  const setCheckAccount = ({ id, name }) => {
+    setTitle(name);
+    setfbid(id);
+    setChecking('success');
+  }
+
+  const getFacebookAPIdata = ({ userId }) => {
+    axios.get(`https://graph.facebook.com/v10.0/${userId}?fields=id,name,picture&access_token=${user.token}`).then(res => {
+      console.log("data ", res)
+      setCheckAccount({ id: res.data.id, name: res.data.name })
+    }).catch(err => handleError())
+  }
+
+  const checkReport = e => {
+    e.preventDefault();
+    setCheckErr(false);
+    setChecking('loading');
+
+    const idStatus = link.search('profile.php')
+    console.log("idStauts ", idStatus)
+
+    if (idStatus === -1) {
+      console.log("username tei account ", idStatus)
+      axios.get(`https://api.scraperapi.com?api_key=b0f4180e29632eb95bade518ddcdbce6&url=${link}`).then(res => {
+
+        const profilePos = res.data.search('fb://profile/')
+        const sfbid = res.data.slice(profilePos + 13, profilePos + 28)
+        console.log("scrapttin ", sfbid)
+        getFacebookAPIdata({ userId: sfbid })
+      }).catch(err => handleError())
+    } else {
+      const idSplit = link.split('=');
+      const sfbid = idSplit[1];
+      console.log('to api ', sfbid);
+      getFacebookAPIdata({ userId: sfbid })
+    }
+  }
+
   return (
     <>
       <DemoNavbar />
@@ -91,7 +139,7 @@ const Login = ({ user, loading }) => {
                     </div>
                   </CardHeader>
                   <CardBody className="px-lg-5 py-lg-5">
-                    {loading ? (<ClipLoader />) : (
+                    {loading ? (<ClipLoader size={25} />) : (
                       <>
                         {success ? (<>
                           <div>Амжилттай илгээлээ.</div>
@@ -108,7 +156,7 @@ const Login = ({ user, loading }) => {
                             }
 
                             {success ? (<div>Амжилттай бүртгэж авлаа</div>) : null}
-                            <FormGroup className="mb-3">
+                            <FormGroup className="mb-1">
                               {console.log("ruser ", link)}
                               <div style={{ textAlign: 'right', fontSize: 11, }}>Яаж линк хуулах вэ?</div>
                               <InputGroup className="input-group-alternative">
@@ -118,13 +166,31 @@ const Login = ({ user, loading }) => {
                                   </InputGroupText>
                                 </InputGroupAddon>
                                 <Input
-                                  disabled={!user || success}
+                                  disabled={!user || success || checking === 'success'}
                                   placeholder="Фэйсбүүк линк"
                                   type="text"
                                   onChange={e => setLink(e.target.value)}
                                 />
+                                <InputGroupAddon addonType="append">
+                                  <Button
+                                    disabled={checking === 'loading' || checking === 'success'}
+                                    color="success"
+                                    onClick={checkReport}
+                                  >
+                                    {checking === 'loading' ? <ClipLoader size={25} /> : 'Шалгах'}
+                                  </Button>
+                                </InputGroupAddon>
+
                               </InputGroup>
-                            </FormGroup>
+                            </FormGroup><div className="mb-3">
+                              {checking === 'success' ? <>
+                                <span className="fb-account-detail">Нэр: {title} || </span>
+                                <span className="fb-account-detail">Фэйсбүүк ID: {fbid}</span>
+                              </> : null}
+                              {checkErr ? <>
+                                <span>Алдаа гарлаа та дахин оролдоод үзээрэй</span>
+                              </> : null}
+                            </div>
                             <FormGroup className="mb-3">
                               <InputGroup className="input-group-alternative">
                                 <InputGroupAddon addonType="prepend">
@@ -165,7 +231,7 @@ const Login = ({ user, loading }) => {
                                 type="button"
                                 onClick={sendReportClick}
                               >
-                                {sending ? <ClipLoader /> : 'Илгээх'}
+                                {sending ? <ClipLoader size={25} /> : 'Илгээх'}
                               </Button>
                             </div>
                           </Form>

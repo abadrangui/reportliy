@@ -17,7 +17,21 @@ export default () => {
     auth.getRedirectResult().then(result => {
       console.log("hahah", result);
       if (result.user !== null) {
-        setUser(result.user);
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var suser = result.user;
+
+        const data = {
+          displayName: suser.displayName,
+          email: suser.email,
+          phoneNumber: suser.phoneNumber,
+          photoURL: suser.photoURL,
+          uid: suser.uid,
+          token: token
+        }
+
+        setUser(data);
       }
       setLoading(false)
     }
@@ -30,14 +44,14 @@ export default () => {
     // This gives you a Facebook Access Token. You can use it to access the Facebook API.
     var token = result.credential.accessToken;
     // The signed-in user info.
-    var user = result.user;
+    var suser = result.user;
 
     const data = {
-      displayName: user.displayName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      photoURL: user.photoURL,
-      uid: user.uid,
+      displayName: suser.displayName,
+      email: suser.email,
+      phoneNumber: suser.phoneNumber,
+      photoURL: suser.photoURL,
+      uid: suser.uid,
       token: token
     }
 

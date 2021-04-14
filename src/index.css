@@ -66,3 +66,8 @@
 .loginBtn--google:focus {
   background: #E74B37;
 }
+
+.fb-account-detail{
+  font-size: 10px;
+  line-height: 12px;
+}
