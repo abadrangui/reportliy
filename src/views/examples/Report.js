@@ -59,6 +59,18 @@ const Login = ({ user, loading }) => {
 
   const sendReportClick = e => {
     e.preventDefault();
+    if (checking !== 'success') {
+      window.alert("Фэйсбүүкийн линк буруу");
+      return
+    }
+    if (/^ *$/.test(reason)) {
+      window.alert("Та коммент бичээгүй байна.")
+      return
+    }
+    if (photos.length === 0) {
+      window.alert("Зураг оруулна уу?");
+      return
+    }
     setSending(true);
     const newReport = firestore.collection('reports').doc();
     newReport.set({
@@ -154,8 +166,6 @@ const Login = ({ user, loading }) => {
                                 <div> hi, {user && user.displayName ? user.displayName : null}</div>
                               )
                             }
-
-                            {success ? (<div>Амжилттай бүртгэж авлаа</div>) : null}
                             <FormGroup className="mb-1">
                               {console.log("ruser ", link)}
                               <div style={{ textAlign: 'right', fontSize: 11, }}>Яаж линк хуулах вэ?</div>
@@ -177,7 +187,7 @@ const Login = ({ user, loading }) => {
                                     color="success"
                                     onClick={checkReport}
                                   >
-                                    {checking === 'loading' ? <ClipLoader size={25} /> : 'Шалгах'}
+                                    {checking === 'loading' ? <ClipLoader size={18} /> : 'Шалгах'}
                                   </Button>
                                 </InputGroupAddon>
 
@@ -206,11 +216,11 @@ const Login = ({ user, loading }) => {
                                 />
                               </InputGroup>
                             </FormGroup>
-                            <FormGroup>
+                            {user && <FormGroup>
                               <span style={{ fontSize: 10 }}>Бэлэн болсон зураг: {photos.length}/10</span>
                               <Uploader handleUploadPhoto={handleUploadPhoto} />
-                            </FormGroup>
-                            <div className="custom-control custom-control-alternative custom-checkbox">
+                            </FormGroup>}
+                            {/* <div className="custom-control custom-control-alternative custom-checkbox">
                               <input
                                 className="custom-control-input"
                                 id=" customCheckLogin"
@@ -222,7 +232,7 @@ const Login = ({ user, loading }) => {
                               >
                                 <span>Өөрийн холбогдох мэдээллээ үлдээх</span>
                               </label>
-                            </div>
+                            </div> */}
                             <div className="text-center">
                               <Button
                                 className="my-4"

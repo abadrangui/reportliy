@@ -32,6 +32,7 @@ const Uploader = ({ handleUploadPhoto }) => {
       instantUpload={true}
       name="files"
       allowReorder={true}
+      maxFiles={10}
 
 
       server={{
