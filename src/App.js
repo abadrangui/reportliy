@@ -11,18 +11,40 @@ import firebase, { auth } from './firebase';
 
 export default () => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     auth.getRedirectResult().then(result => {
       console.log("hahah", result);
       if (result.user !== null) {
-        setUser(result);
+        setUser(result.user);
       }
+      setLoading(false)
     }
     ).catch(err => {
       console.log("redirect login err ", err);
     })
   }, [])
+
+  const handleAuthResult = (result) => {
+    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+    var token = result.credential.accessToken;
+    // The signed-in user info.
+    var user = result.user;
+
+    const data = {
+      displayName: user.displayName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      photoURL: user.photoURL,
+      uid: user.uid,
+      token: token
+    }
+
+    setUser(data);
+
+    console.log("user ", user, token);
+  }
 
   return (
 
@@ -46,7 +68,16 @@ export default () => {
           render={props => <Register {...props} />}
         />
 
-        <Route path="/" exact component={props => <Report user={user} {...props} />} />
+        <Route
+          path="/"
+          exact
+          component={props =>
+            <Report
+              user={user}
+              loading={loading}
+              {...props}
+            />}
+        />
 
         {/* <Redirect to="/" /> */}
       </Switch>

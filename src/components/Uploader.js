@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
-const Uploader = ({ album }) => {
+const Uploader = ({ handleUploadPhoto }) => {
   const [files, setFiles] = useState([]);
   const albumZcode = "111"
 
@@ -57,6 +57,7 @@ const Uploader = ({ album }) => {
               //   onRequestSave(id);
               storage.ref(fileRef).getDownloadURL().then(doc => {
                 console.log("dataURL ", doc)
+                handleUploadPhoto(doc)
               })
               console.log("complete !")
             }

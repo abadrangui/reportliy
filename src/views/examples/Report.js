@@ -16,6 +16,7 @@ import {
   Row,
   Col
 } from "reactstrap";
+import ClipLoader from "react-spinners/ClipLoader";
 
 // core components
 import DemoNavbar from "components/Navbar.js";
@@ -23,9 +24,12 @@ import SimpleFooter from "components/Footers/SimpleFooter.js";
 import Uploader from 'components/Uploader.js';
 import firebase, { firestore, auth } from '../../firebase';
 
-const Login = () => {
-
-  const [user, setUser] = useState({})
+const Login = ({ user, loading }) => {
+  const [link, setLink] = useState('');
+  const [reason, setReason] = useState('');
+  const [photos, setPhotos] = useState([]);
+  const [success, setSuccess] = useState(false);
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -36,36 +40,30 @@ const Login = () => {
     })
   }, [])
 
-  const handleAuthResult = (result) => {
-    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    var token = result.credential.accessToken;
-    // The signed-in user info.
-    var user = result.user;
-
-    const data = {
-      displayName: user.displayName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      photoURL: user.photoURL,
-      uid: user.uid,
-      token: token
-    }
-
-    window.localStorage.setItem('@user', JSON.stringify(data));
-    setUser(data);
-
-    console.log("user ", user, token);
+  const handleUploadPhoto = (link) => {
+    setPhotos(photos => ([...photos, link]));
   }
 
-  const loginFacebook = () => {
+
+  const loginFacebook = (e) => {
+    e.preventDefault();
     firebase.auth().useDeviceLanguage();
     var provider = new firebase.auth.FacebookAuthProvider();
+    auth.signInWithRedirect(provider)
+  }
 
-    // provider.addScope('public_profile', 'email');
-    console.log("")
-    auth.signInWithPopup(provider).then((result) => {
-      console.log("resutl ", result)
-    }).catch(err => { console.log("err ", err) })
+  const sendReportClick = e => {
+    e.preventDefault();
+    setSending(true);
+    const newReport = firestore.collection('reports').doc();
+    newReport.set({
+      link: link,
+      reason: reason,
+      photos: photos,
+      uid: user.uid,
+    }).then(() => {
+      setSuccess(true)
+    })
   }
 
   return (
@@ -93,59 +91,88 @@ const Login = () => {
                     </div>
                   </CardHeader>
                   <CardBody className="px-lg-5 py-lg-5">
-                    <Form role="form">
-                      <button className="loginBtn loginBtn--facebook" onClick={loginFacebook}>
-                        Facebook-р нэвтрэх
-                      </button>
+                    {loading ? (<ClipLoader />) : (
+                      <>
+                        {success ? (<>
+                          <div>Амжилттай илгээлээ.</div>
+                        </>) : (
+                          <Form role="form">
+                            {
+                              !user ? (
+                                <button className="loginBtn loginBtn--facebook" onClick={loginFacebook}>
+                                  Facebook-р нэвтрэх
+                                </button>
+                              ) : (
+                                <div> hi, {user && user.displayName ? user.displayName : null}</div>
+                              )
+                            }
 
+                            {success ? (<div>Амжилттай бүртгэж авлаа</div>) : null}
+                            <FormGroup className="mb-3">
+                              {console.log("ruser ", link)}
+                              <div style={{ textAlign: 'right', fontSize: 11, }}>Яаж линк хуулах вэ?</div>
+                              <InputGroup className="input-group-alternative">
+                                <InputGroupAddon addonType="prepend">
+                                  <InputGroupText>
+                                    <i className="ni ni-single-02" />
+                                  </InputGroupText>
+                                </InputGroupAddon>
+                                <Input
+                                  disabled={!user || success}
+                                  placeholder="Фэйсбүүк линк"
+                                  type="text"
+                                  onChange={e => setLink(e.target.value)}
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                            <FormGroup className="mb-3">
+                              <InputGroup className="input-group-alternative">
+                                <InputGroupAddon addonType="prepend">
+                                  <InputGroupText>
+                                    <i className="ni ni-collection" />
+                                  </InputGroupText>
+                                </InputGroupAddon>
+                                <Input
+                                  disabled={!user || success}
+                                  placeholder="Тайлбар"
+                                  type="textarea"
+                                  onChange={e => setReason(e.target.value)}
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                            <FormGroup>
+                              <span style={{ fontSize: 10 }}>Бэлэн болсон зураг: {photos.length}/10</span>
+                              <Uploader handleUploadPhoto={handleUploadPhoto} />
+                            </FormGroup>
+                            <div className="custom-control custom-control-alternative custom-checkbox">
+                              <input
+                                className="custom-control-input"
+                                id=" customCheckLogin"
+                                type="checkbox"
+                              />
+                              <label
+                                className="custom-control-label"
+                                htmlFor=" customCheckLogin"
+                              >
+                                <span>Өөрийн холбогдох мэдээллээ үлдээх</span>
+                              </label>
+                            </div>
+                            <div className="text-center">
+                              <Button
+                                className="my-4"
+                                disabled={sending}
+                                color="primary"
+                                type="button"
+                                onClick={sendReportClick}
+                              >
+                                {sending ? <ClipLoader /> : 'Илгээх'}
+                              </Button>
+                            </div>
+                          </Form>
 
-                      <FormGroup className="mb-3">
-                        <div style={{ textAlign: 'right', fontSize: 11, }}>Яаж линк хуулах вэ?</div>
-                        <InputGroup className="input-group-alternative">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="ni ni-single-02" />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input placeholder="Фэйсбүүк линк" type="text" />
-                        </InputGroup>
-                      </FormGroup>
-                      <FormGroup className="mb-3">
-                        <InputGroup className="input-group-alternative">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="ni ni-collection" />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input placeholder="Тайлбар" type="textarea" />
-                        </InputGroup>
-                      </FormGroup>
-                      <FormGroup>
-                        <Uploader />
-                      </FormGroup>
-                      <div className="custom-control custom-control-alternative custom-checkbox">
-                        <input
-                          className="custom-control-input"
-                          id=" customCheckLogin"
-                          type="checkbox"
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor=" customCheckLogin"
-                        >
-                          <span>Өөрийн холбогдох мэдээллээ үлдээх</span>
-                        </label>
-                      </div>
-                      <div className="text-center">
-                        <Button
-                          className="my-4"
-                          color="primary"
-                          type="button"
-                        >
-                          Илгээх
-                          </Button>
-                      </div>
-                    </Form>
+                        )}
+                      </>
+                    )}
                   </CardBody>
                 </Card>
                 <Row className="mt-3">
