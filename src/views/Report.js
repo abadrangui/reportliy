@@ -14,10 +14,11 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 import ClipLoader from "react-spinners/ClipLoader";
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
 
 // core components
 import Uploader from 'components/Uploader.js';
@@ -34,6 +35,8 @@ const Login = ({ user, loading }) => {
   const [fbid, setfbid] = useState('');
   const [checkErr, setCheckErr] = useState(false);
   const [timer, setTimer] = useState(false);
+
+  const history = useHistory();
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -279,7 +282,7 @@ const Login = ({ user, loading }) => {
                     <a
                       className="text-light"
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={e => { e.preventDefault(); history.push('aboutus') }}
                     >
                       <small>Бид хэн бэ?</small>
                     </a>
@@ -288,7 +291,7 @@ const Login = ({ user, loading }) => {
                     <a
                       className="text-light"
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={e => { e.preventDefault(); history.push('faq') }}
                     >
                       <small>Ямар арга хэмжээ авах вэ?</small>
                     </a>

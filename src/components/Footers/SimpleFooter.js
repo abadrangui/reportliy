@@ -10,9 +10,11 @@ import {
   Col,
   UncontrolledTooltip
 } from "reactstrap";
+import { withRouter } from 'react-router';
 
 class SimpleFooter extends React.Component {
   render() {
+    const { history } = this.props;
     return (
       <>
         <footer className=" footer">
@@ -93,10 +95,10 @@ class SimpleFooter extends React.Component {
                   <a
                     href="#"
                     target="_blank"
+                    onClick={e => { e.preventDefault(); history.push('aboutus') }}
                   >
                     ГОЁ ХҮНҮҮС
                   </a>
-                  .
                 </div>
               </Col>
               <Col md="6">
@@ -143,4 +145,4 @@ class SimpleFooter extends React.Component {
   }
 }
 
-export default SimpleFooter;
+export default withRouter(SimpleFooter);
