@@ -39,6 +39,7 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 import logo from 'assets/img/brand/rlogo.png'
+import { withRouter } from 'react-router';
 
 class DemoNavbar extends React.Component {
   componentDidMount() {
@@ -64,6 +65,7 @@ class DemoNavbar extends React.Component {
   };
 
   render() {
+    const { history } = this.props;
     return (
       <>
         <header className="header-global">
@@ -109,19 +111,19 @@ class DemoNavbar extends React.Component {
                 </div>
                 <Nav className="navbar-nav-hover align-items-lg-center" navbar>
                   <UncontrolledDropdown nav>
-                    <DropdownToggle nav>
+                    <DropdownToggle nav onClick={() => history.push('stories')} >
                       <i className="ni ni-ui-04 d-lg-none mr-1" />
                       <span className="nav-link-inner--text">Story telling</span>
                     </DropdownToggle>
                   </UncontrolledDropdown>
                   <UncontrolledDropdown nav>
-                    <DropdownToggle nav>
+                    <DropdownToggle nav onClick={() => history.push('advice')} >
                       <i className="ni ni-collection d-lg-none mr-1" />
                       <span className="nav-link-inner--text">Зөвлөмжүүд</span>
                     </DropdownToggle>
                   </UncontrolledDropdown>
                   <UncontrolledDropdown nav>
-                    <DropdownToggle nav>
+                    <DropdownToggle nav onClick={() => history.push('helpcenter')} >
                       <i className="ni ni-collection d-lg-none mr-1" />
                       <span className="nav-link-inner--text">Холбогдох байгууллагууд</span>
                     </DropdownToggle>
@@ -186,4 +188,4 @@ class DemoNavbar extends React.Component {
   }
 }
 
-export default DemoNavbar;
+export default withRouter(DemoNavbar);

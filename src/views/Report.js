@@ -21,7 +21,7 @@ import axios from 'axios';
 
 // core components
 import Uploader from 'components/Uploader.js';
-import firebase, { firestore, auth } from '../../firebase';
+import firebase, { firestore, auth } from '../firebase';
 
 const Login = ({ user, loading }) => {
   const [link, setLink] = useState('');
@@ -42,9 +42,13 @@ const Login = ({ user, loading }) => {
     firestore.collection('test').doc('123').get().then((doc) => {
       console.log("test ", doc.data())
     })
-    setTimeout(() => {
+    const overtime = setTimeout(() => {
       setTimer(true);
     }, 5000);
+
+    return () => {
+      clearTimeout(overtime);
+    }
   }, [])
 
   const handleUploadPhoto = (link) => {
