@@ -31,13 +31,21 @@ export default () => {
           token: token
         }
 
+        window.localStorage.setItem('@user', JSON.stringify(data));
         setUser(data);
+      } else {
+        const userdata = JSON.parse(window.localStorage.getItem('@user'));
+        // console.log('userData ', userdata);
+        if (userdata !== null) {
+          setUser(userdata);
+        }
       }
       setLoading(false)
     }
     ).catch(err => {
       console.log("redirect login err ", err);
     })
+
   }, [])
 
   const handleAuthResult = (result) => {
