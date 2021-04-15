@@ -20,8 +20,6 @@ import ClipLoader from "react-spinners/ClipLoader";
 import axios from 'axios';
 
 // core components
-import DemoNavbar from "components/Navbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
 import Uploader from 'components/Uploader.js';
 import firebase, { firestore, auth } from '../../firebase';
 
@@ -134,7 +132,6 @@ const Login = ({ user, loading }) => {
 
   return (
     <>
-      <DemoNavbar />
       <main>
         <section className="section section-shaped section-lg">
           <div className="shape shape-style-1 bg-gradient-default">
@@ -298,7 +295,6 @@ const Login = ({ user, loading }) => {
           </Container>
         </section>
       </main>
-      <SimpleFooter />
     </>
   );
 
