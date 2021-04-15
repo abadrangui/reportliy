@@ -35,6 +35,7 @@ const Login = ({ user, loading }) => {
   const [title, setTitle] = useState('');
   const [fbid, setfbid] = useState('');
   const [checkErr, setCheckErr] = useState(false);
+  const [timer, setTimer] = useState(false);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -43,6 +44,9 @@ const Login = ({ user, loading }) => {
     firestore.collection('test').doc('123').get().then((doc) => {
       console.log("test ", doc.data())
     })
+    setTimeout(() => {
+      setTimer(true);
+    }, 5000);
   }, [])
 
   const handleUploadPhoto = (link) => {
@@ -78,6 +82,8 @@ const Login = ({ user, loading }) => {
       reason: reason,
       photos: photos,
       uid: user.uid,
+      name: title,
+      fbid: fbid,
     }).then(() => {
       setSuccess(true)
     })
@@ -150,8 +156,15 @@ const Login = ({ user, loading }) => {
                       <h2>Report нэмэх</h2>
                     </div>
                   </CardHeader>
-                  <CardBody className="px-lg-5 py-lg-5">
-                    {loading ? (<ClipLoader size={25} />) : (
+                  <CardBody className="px-lg-5 py-lg-5" style={{ display: 'flex', justifyContent: 'center' }}>
+                    {loading ? (<div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                      <ClipLoader size={25} />
+                      <br />
+                      {timer && <h6 style={{ textAlign: 'center' }}>
+                        Хэрвээ удаан уншаад байвал та Chrome, Safari хөтөч дээр орно уу?
+                      </h6>
+                      }
+                    </div>) : (
                       <>
                         {success ? (<>
                           <div>Амжилттай илгээлээ.</div>
@@ -159,16 +172,23 @@ const Login = ({ user, loading }) => {
                           <Form role="form">
                             {
                               !user ? (
-                                <button className="loginBtn loginBtn--facebook" onClick={loginFacebook}>
-                                  Facebook-р нэвтрэх
-                                </button>
+                                <>
+                                  <h6>Эхлээд нэвтрээрэй</h6>
+                                  <button className="loginBtn loginBtn--facebook" onClick={loginFacebook}>
+                                    Facebook-р нэвтрэх
+                                  </button>
+                                </>
                               ) : (
-                                <div> hi, {user && user.displayName ? user.displayName : null}</div>
+                                <div> Hi, {user && user.displayName ? user.displayName : null}</div>
                               )
                             }
                             <FormGroup className="mb-1">
                               {console.log("ruser ", link)}
-                              <div style={{ textAlign: 'right', fontSize: 11, }}>Яаж линк хуулах вэ?</div>
+                              {user && checking !== 'success' ? (<div>
+                                <h6 style={{ fontSize: 12, }}>
+                                  Одоо репорлох хүнийхээ профайл линкийг хуулаад шалгаад үзээрэй!
+                                </h6>
+                              </div>) : null}
                               <InputGroup className="input-group-alternative">
                                 <InputGroupAddon addonType="prepend">
                                   <InputGroupText>
@@ -195,11 +215,13 @@ const Login = ({ user, loading }) => {
                             </FormGroup><div className="mb-3">
                               {checking === 'success' ? <>
                                 <span className="fb-account-detail">Нэр: {title} || </span>
-                                <span className="fb-account-detail">Фэйсбүүк ID: {fbid}</span>
+                                <span className="fb-account-detail">Фэйсбүүк ID: {fbid}</span> <br />
+                                <span>Профайлыг амжилттай холболоо. Тайлбар болон зургаа хавсаргаад илгээгээрэй.</span>
                               </> : null}
                               {checkErr ? <>
                                 <span>Алдаа гарлаа та дахин оролдоод үзээрэй</span>
                               </> : null}
+
                             </div>
                             <FormGroup className="mb-3">
                               <InputGroup className="input-group-alternative">
