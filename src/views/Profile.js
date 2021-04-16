@@ -116,7 +116,7 @@ export default ({ ...props }) => {
                     </div>
                   </Col>
                 </Row>
-                <div className=" py-5 border-top text-center">
+                <div className=" py-1 border-top text-center">
                   <Row className="">
                     <Col lg="12">
                       <ListGroup>
@@ -161,7 +161,7 @@ export default ({ ...props }) => {
                     </Col>
 
                   </Row>
-                  <Row>
+                  {/* <Row>
                     <Col lg="9">
                       <p>
                         An artist of considerable range, Ryan — the name taken
@@ -174,7 +174,7 @@ export default ({ ...props }) => {
                         Show more
                   </a>
                     </Col>
-                  </Row>
+                  </Row> */}
                 </div>
               </div>
             </Card>
