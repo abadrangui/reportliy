@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 import Index from "views/Index.js";
 import Landing from "views/examples/Landing.js";
@@ -102,6 +103,11 @@ export default ({ user, loading, handleLogOut, ...props }) => {
         {/* <Redirect to="/" /> */}
       </Switch>
       <SimpleFooter />
+
+      <MessengerCustomerChat
+        pageId="103204638566365"
+        appId="269359434900783"
+      />
     </BrowserRouter>
   );
 }
