@@ -71,3 +71,7 @@
   font-size: 10px;
   line-height: 12px;
 }
+
+.ReactCollapse--collapse {
+  transition: height 1000ms;
+}

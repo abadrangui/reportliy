@@ -19,10 +19,13 @@ import {
 import ClipLoader from "react-spinners/ClipLoader";
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import { Collapse } from 'react-collapse';
 
 // core components
 import Uploader from 'components/Uploader.js';
 import firebase, { firestore, auth } from '../firebase';
+import questionData from "./moreQuestions";
+const qanswers = Object.assign({}, questionData)
 
 const Login = ({ user, loading }) => {
   const [link, setLink] = useState('');
@@ -35,6 +38,8 @@ const Login = ({ user, loading }) => {
   const [fbid, setfbid] = useState('');
   const [checkErr, setCheckErr] = useState(false);
   const [timer, setTimer] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [answers, setAnswers] = useState(qanswers);
 
   const history = useHistory();
 
@@ -42,9 +47,9 @@ const Login = ({ user, loading }) => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     // this.refs.main.scrollTop = 0;
-    firestore.collection('test').doc('123').get().then((doc) => {
-      console.log("test ", doc.data())
-    })
+    // firestore.collection('test').doc('123').get().then((doc) => {
+    //   console.log("test ", doc.data())
+    // })
     const overtime = setTimeout(() => {
       setTimer(true);
     }, 5000);
@@ -89,6 +94,8 @@ const Login = ({ user, loading }) => {
       uid: user.uid,
       name: title,
       fbid: fbid,
+      moreQ: collapsed,
+      answers: collapsed ? { answers } : null
     }).then(() => {
       setSuccess(true)
     })
@@ -107,7 +114,7 @@ const Login = ({ user, loading }) => {
 
   const getFacebookAPIdata = ({ userId }) => {
     axios.get(`https://graph.facebook.com/v10.0/${userId}?fields=id,name,picture&access_token=${user.token}`).then(res => {
-      console.log("data ", res)
+      // console.log("data ", res)
       setCheckAccount({ id: res.data.id, name: res.data.name })
     }).catch(err => handleError())
   }
@@ -118,10 +125,10 @@ const Login = ({ user, loading }) => {
     setChecking('loading');
 
     const idStatus = link.search('profile.php')
-    console.log("idStauts ", idStatus)
+    // console.log("idStauts ", idStatus)
 
     if (idStatus === -1) {
-      console.log("username tei account ", idStatus)
+      // console.log("username tei account ", idStatus)
       axios.get(`https://api.scraperapi.com?api_key=b0f4180e29632eb95bade518ddcdbce6&url=${link}`).then(res => {
 
         const profilePos = res.data.search('fb://profile/')
@@ -135,6 +142,10 @@ const Login = ({ user, loading }) => {
       console.log('to api ', sfbid);
       getFacebookAPIdata({ userId: sfbid })
     }
+  }
+
+  const answerClick = ({ qindex, index, value }) => {
+    setAnswers(answers => ({ ...answers, [qindex]: { ...answers[qindex], [`answer${index}`]: value } }))
   }
 
   return (
@@ -187,7 +198,6 @@ const Login = ({ user, loading }) => {
                               )
                             }
                             <FormGroup className="mb-1">
-                              {console.log("ruser ", link)}
                               {user && checking !== 'success' ? (<div>
                                 <h6 style={{ fontSize: 12, }}>
                                   Одоо репорлох хүнийхээ профайл линкийг хуулаад шалгаад үзээрэй!
@@ -246,19 +256,52 @@ const Login = ({ user, loading }) => {
                               <span style={{ fontSize: 10 }}>Бэлэн болсон зураг: {photos.length}/10</span>
                               <Uploader handleUploadPhoto={handleUploadPhoto} />
                             </FormGroup>}
-                            {/* <div className="custom-control custom-control-alternative custom-checkbox">
+                            <div className="custom-control custom-control-alternative custom-checkbox mb-3">
                               <input
                                 className="custom-control-input"
                                 id=" customCheckLogin"
                                 type="checkbox"
+                                onClick={e => setCollapsed(e.target.checked)}
                               />
                               <label
                                 className="custom-control-label"
                                 htmlFor=" customCheckLogin"
                               >
-                                <span>Өөрийн холбогдох мэдээллээ үлдээх</span>
+                                <span>Дэлгэрэнгүй</span>
                               </label>
-                            </div> */}
+                            </div>
+                            {/* Collapsible */}
+                            <Collapse isOpened={collapsed} >
+                              {questionData.map((data, qindex) => {
+                                return (
+                                  <>
+                                    <div>{data.question}</div>
+
+                                    {data.choices.map((choice, index) => {
+                                      return (
+                                        <div className="custom-control custom-control-alternative custom-checkbox mb-1 ml-5">
+                                          <input
+                                            className="custom-control-input"
+                                            checked={answers[qindex][`answer${index}`]}
+                                            id={`answer-${qindex}-${index}`}
+                                            type="checkbox"
+                                            onClick={e => { answerClick({ qindex, index, value: e.target.checked }) }}
+                                          />
+                                          <label
+                                            className="custom-control-label"
+                                            htmlFor={`answer-${qindex}-${index}`}
+                                          >
+                                            <span>{choice.text}</span>
+                                          </label>
+                                        </div>
+                                      )
+                                    })}
+
+                                  </>
+                                )
+                              })}
+
+                            </Collapse>
                             <div className="text-center">
                               <Button
                                 className="my-4"
