@@ -164,7 +164,25 @@ const Login = ({ user, loading }) => {
           </div>
           <Container className="pt-lg-7">
             <Row className="justify-content-center">
-              <Col lg="5">
+              <Col lg="6" >
+
+                <FormGroup className="mb-3">
+                  <InputGroup className="input-group-alternative">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-collection" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      disabled={!user || success}
+                      placeholder="Тайлбар"
+                      type="text"
+                      onChange={e => setReason(e.target.value)}
+                    />
+                  </InputGroup>
+                </FormGroup>
+              </Col>
+              <Col lg="6">
                 <Card className="bg-secondary shadow border-0">
                   <CardHeader className="bg-white">
                     <div className="text-muted text-center mb-3">
