@@ -12,6 +12,7 @@ import AboutUs from 'views/AboutUs.js'
 import Advice from 'views/Advice.js'
 import HelpCenter from 'views/HelpCenter.js'
 import Stories from 'views/Stories.js'
+import StoriesDetail from 'views/StoriesDetail.js'
 import DemoNavbar from "components/Navbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 
@@ -86,6 +87,14 @@ export default ({ user, loading, handleLogOut, ...props }) => {
           exact
           component={props =>
             <FAQ
+              {...props}
+            />}
+        />
+        <Route
+          path="/storiesdetail"
+          exact
+          component={props =>
+            <StoriesDetail
               {...props}
             />}
         />
