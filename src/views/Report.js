@@ -315,21 +315,24 @@ const Login = ({ user, loading, handleLogOut }) => {
                             {
                               !user ? (
                                 <>
-                                  <h6 className="text-success">Эхлээд нэвтрээрэй</h6>
+                                  <h6 className="text-report-guide px-2 py-1 mb-2 ">Эхлээд нэвтрээрэй</h6>
                                   <button className="loginBtn loginBtn--facebook" onClick={loginFacebook}>
                                     Facebook-р нэвтрэх
                                   </button>
                                 </>
                               ) : (
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }} >
-                                  <span>Hi, {user && user.displayName ? user.displayName : null}</span>
+                                <div className="mb-3" style={{ display: 'flex', justifyContent: 'space-between' }} >
+                                  <div>
+                                    <span>Hi, {user && user.displayName ? user.displayName : null}</span>
+                                    <h5>Бид таны хувийн мэдээллийг РЕПОРТ дээр харуулахгүй.</h5>
+                                  </div>
                                   <a href='#' onClick={e => { e.preventDefault(); handleLogOut() }} className="text-light" ><u>Гарах</u></a>
                                 </div>
                               )
                             }
                             <FormGroup className="mb-1">
                               {user && checking !== 'success' ? (<div>
-                                <h6 className="text-success" style={{ fontSize: 12, }}>
+                                <h6 className="text-report-guide px-2 py-1 mb-2" >
                                   Одоо репорлох хүнийхээ профайл линкийг хуулаад шалгаад үзээрэй!
                                 </h6>
                               </div>) : null}
@@ -360,7 +363,7 @@ const Login = ({ user, loading, handleLogOut }) => {
                               {checking === 'success' ? <>
                                 <span className="fb-account-detail">Нэр: {title} || </span>
                                 <span className="fb-account-detail">Фэйсбүүк ID: {fbid}</span> <br />
-                                <span className="text-success" style={{ fontSize: 12, lineHeight: 0 }} >Профайлыг амжилттай холболоо. Тайлбар болон зургаа хавсаргаад илгээгээрэй.</span>
+                                <span className="text-report-guide px-2 py-1 mb-2" >Репортлох профайлыг амжилттай холболоо. Тайлбар болон зургаа хавсаргаад илгээгээрэй.</span>
                               </> : null}
                               {checkErr ? <>
                                 <span>Алдаа гарлаа та дахин оролдоод үзээрэй</span>

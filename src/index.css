@@ -75,3 +75,11 @@
 .ReactCollapse--collapse {
   transition: height 1000ms;
 }
+
+.text-report-guide {
+  font-size: 12px;
+  border-radius: 8px;
+  background-color: #cbcfd6;
+  display: inline-flex;
+  margin-bottom: 18px;
+}
