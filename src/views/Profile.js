@@ -13,6 +13,7 @@ import {
   ListGroupItem,
 } from "reactstrap";
 import { firestore } from '../firebase';
+import Image from 'rc-image';
 
 export default ({ ...props }) => {
 
@@ -126,7 +127,14 @@ export default ({ ...props }) => {
                               <Collapse isOpen={collapsed === index} >
                                 <div className="mt-3">
                                   {data.photos.length && data.photos.map((img) => {
-                                    return (<img className="report-img" src={img} />)
+                                    return (
+                                      <Image
+                                        className="report-img"
+                                        src={img}
+                                        placeholder={<div className="report-img-placeholder" />}
+                                        onClick={() => { console.log("muahsadjfais") }}
+                                      />
+                                    )
                                   })}
                                 </div>
                               </Collapse>
