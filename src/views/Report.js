@@ -15,11 +15,14 @@ import {
   Container,
   Row,
   Col,
+  Label,
 } from "reactstrap";
 import ClipLoader from "react-spinners/ClipLoader";
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { Collapse } from 'react-collapse';
+
+import { FaSearch } from "react-icons/fa";
 
 // core components
 import Uploader from 'components/Uploader.js';
@@ -27,7 +30,7 @@ import firebase, { firestore, auth } from '../firebase';
 import questionData from "./moreQuestions";
 const qanswers = Object.assign({}, questionData)
 
-const Login = ({ user, loading }) => {
+const Login = ({ user, loading, handleLogOut }) => {
   const [link, setLink] = useState('');
   const [reason, setReason] = useState('');
   const [photos, setPhotos] = useState([]);
@@ -40,6 +43,7 @@ const Login = ({ user, loading }) => {
   const [timer, setTimer] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [answers, setAnswers] = useState(qanswers);
+  const [searchValue, setSearchValue] = useState('');
 
   const history = useHistory();
 
@@ -148,6 +152,10 @@ const Login = ({ user, loading }) => {
     setAnswers(answers => ({ ...answers, [qindex]: { ...answers[qindex], [`answer${index}`]: value } }))
   }
 
+  const searchReport = () => {
+
+  }
+
   return (
     <>
       <main>
@@ -162,26 +170,65 @@ const Login = ({ user, loading }) => {
             <span />
             <span />
           </div>
-          <Container className="pt-lg-7">
+          <Container className="">
             <Row className="justify-content-center">
-              {/* <Col lg="6" >
+              <Col lg="6" className="" style={{ display: 'flex' }}>
 
-                <FormGroup className="mb-3">
-                  <InputGroup className="input-group-alternative">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="ni ni-collection" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input
-                      disabled={!user || success}
-                      placeholder="Тайлбар"
-                      type="text"
-                      onChange={e => setReason(e.target.value)}
-                    />
-                  </InputGroup>
-                </FormGroup>
-              </Col> */}
+                <div className='w-100 my-5 py-5'>
+
+                  <h4 className="text-white mb-3">Та хэн нэгэнд итгэхгүй байна уу? <br /> Тэгвэл хайгаад үз.</h4>
+
+                  <div className="mb-2">
+                    <FormGroup check inline>
+                      <Label check>
+                        <Input type="checkbox" checked={true} /> <span className="text-white">Facebook</span>
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check inline>
+                      <Label check>
+                        <Input disabled type="checkbox" /> <span className="text-white">Instagram <span className="text-muted" style={{ fontSize: 10 }}>(soon)</span></span>
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check inline>
+                      <Label check>
+                        <Input disabled type="checkbox" /> <span className="text-white">Twitter <span className="text-muted" style={{ fontSize: 10 }}>(soon)</span></span>
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check inline>
+                      <Label check>
+                        <Input disabled type="checkbox" /> <span className="text-white">Tik Tok <span className="text-muted" style={{ fontSize: 10 }}>(soon)</span></span>
+                      </Label>
+                    </FormGroup>
+
+                  </div>
+
+                  <FormGroup className=" mb-3">
+                    <InputGroup className="input-group-alternative">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <FaSearch />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        // disabled={!user || success}
+                        placeholder="Фэйсбүүк линк"
+                        type="text"
+                        onChange={e => setSearchValue(e.target.value)}
+                      />
+                      <InputGroupAddon addonType="append">
+                        <Button
+                          // disabled={checking === 'loading' || checking === 'success'}
+                          color="primary"
+                          onClick={searchReport}
+                        >
+                          Хайх
+                        {/* {checking === 'loading' ? <ClipLoader size={18} /> : 'Шалгах'} */}
+                        </Button>
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </FormGroup>
+                </div>
+              </Col>
               <Col lg="6">
                 <Card className="bg-secondary shadow border-0">
                   <CardHeader className="bg-white">
@@ -212,7 +259,10 @@ const Login = ({ user, loading }) => {
                                   </button>
                                 </>
                               ) : (
-                                <div> Hi, {user && user.displayName ? user.displayName : null}</div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }} >
+                                  <span>Hi, {user && user.displayName ? user.displayName : null}</span>
+                                  <a href='#' onClick={e => { e.preventDefault(); handleLogOut() }} className="text-light" ><u>Гарах</u></a>
+                                </div>
                               )
                             }
                             <FormGroup className="mb-1">
@@ -351,7 +401,7 @@ const Login = ({ user, loading }) => {
                   <Col className="text-right" xs="6">
                     <a
                       className="text-light"
-                      href="#pablo"
+                      href="#"
                       onClick={e => { e.preventDefault(); history.push('faq') }}
                     >
                       <small>Ямар арга хэмжээ авах вэ?</small>

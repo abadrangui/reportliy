@@ -15,7 +15,7 @@ import Stories from 'views/Stories.js'
 import DemoNavbar from "components/Navbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 
-export default ({ user, loading, ...props }) => {
+export default ({ user, loading, handleLogOut, ...props }) => {
   return (
     <BrowserRouter>
       <DemoNavbar />
@@ -45,6 +45,7 @@ export default ({ user, loading, ...props }) => {
             <Report
               user={user}
               loading={loading}
+              handleLogOut={handleLogOut}
               {...props}
             />}
         />

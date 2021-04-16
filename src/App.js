@@ -41,30 +41,16 @@ export default () => {
 
   }, [])
 
-  const handleAuthResult = (result) => {
-    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    var token = result.credential.accessToken;
-    // The signed-in user info.
-    var suser = result.user;
-
-    const data = {
-      displayName: suser.displayName,
-      email: suser.email,
-      phoneNumber: suser.phoneNumber,
-      photoURL: suser.photoURL,
-      uid: suser.uid,
-      token: token
-    }
-
-    setUser(data);
-
-    console.log("user ", user, token);
+  const handleLogOut = () => {
+    setUser(null);
+    window.localStorage.removeItem('@user');
   }
 
   return (
     <Navigator
       user={user}
       loading={loading}
+      handleLogOut={handleLogOut}
     />
   );
 }
