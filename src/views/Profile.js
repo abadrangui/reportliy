@@ -14,12 +14,16 @@ import {
 } from "reactstrap";
 import { firestore } from '../firebase';
 import Image from 'rc-image';
+import ImageViewer from 'react-simple-image-viewer';
 
 export default ({ ...props }) => {
 
   const { fbid } = useParams();
   const [reports, setReports] = useState([]);
-  const [collapsed, setCollapsed] = useState(0)
+  const [collapsed, setCollapsed] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [images, setImages] = useState([]);
+  const [currentImage, setCurrentImage] = useState(0);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -73,6 +77,14 @@ export default ({ ...props }) => {
         </section>
         <section className="section">
           <Container>
+            {isViewerOpen && (
+              <ImageViewer
+                src={images}
+                currentIndex={currentImage}
+                onClose={() => setIsViewerOpen(false)}
+                style={{ zIndex: 10 }}
+              />
+            )}
             <Card className="card-profile shadow mt-profile">
               <div className="px-4">
                 <Row className="justify-content-space-between">
@@ -126,13 +138,17 @@ export default ({ ...props }) => {
                               </div>
                               <Collapse isOpen={collapsed === index} >
                                 <div className="mt-3">
-                                  {data.photos.length && data.photos.map((img) => {
+                                  {data.photos.length && data.photos.map((img, pindex) => {
                                     return (
                                       <Image
                                         className="report-img"
                                         src={img}
                                         placeholder={<div className="report-img-placeholder" />}
-                                        onClick={() => { console.log("muahsadjfais") }}
+                                        onClick={() => {
+                                          setImages(data.photos);
+                                          setCurrentImage(pindex);
+                                          setIsViewerOpen(true);
+                                        }}
                                       />
                                     )
                                   })}
