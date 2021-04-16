@@ -164,7 +164,7 @@ const Login = ({ user, loading }) => {
           </div>
           <Container className="pt-lg-7">
             <Row className="justify-content-center">
-              <Col lg="6" >
+              {/* <Col lg="6" >
 
                 <FormGroup className="mb-3">
                   <InputGroup className="input-group-alternative">
@@ -181,7 +181,7 @@ const Login = ({ user, loading }) => {
                     />
                   </InputGroup>
                 </FormGroup>
-              </Col>
+              </Col> */}
               <Col lg="6">
                 <Card className="bg-secondary shadow border-0">
                   <CardHeader className="bg-white">
