@@ -115,3 +115,49 @@
 .size-12{
   font-size: 12px;
 }
+
+
+.dz-message-container {
+  padding-bottom: 15px;
+}
+
+.dz-message-box {
+  display: flex;
+  align-items: center;
+}
+
+.dz-message-box-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.dz-message-box-text-left {
+  max-width: 75%;
+  display: inline-block;
+  background: #A797FF;
+  border-radius: 1.3rem 1.3rem 1.3rem 0px;
+  margin-left: 16px;
+  margin-right: 16px;
+  padding-bottom: 7px;
+  padding-right: 12px;
+  padding-top: 6px;
+  padding-left: 12px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.dz-message-box-text-right {
+  max-width: 75%;
+  display: inline-block;
+  background: #A797FF;
+  border-radius: 1.3rem 1.3rem 0px 1.3rem ;
+  margin-left: 16px;
+  margin-right: 16px;
+  padding-bottom: 7px;
+  padding-right: 12px;
+  padding-top: 6px;
+  padding-left: 12px;
+  font-size: 16px;
+  color: #fff;
+}
