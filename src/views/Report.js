@@ -16,6 +16,8 @@ import {
   Row,
   Col,
   Label,
+  ListGroup,
+  ListGroupItem
 } from "reactstrap";
 import ClipLoader from "react-spinners/ClipLoader";
 import axios from 'axios';
@@ -23,6 +25,7 @@ import { useHistory } from "react-router-dom";
 import { Collapse } from 'react-collapse';
 
 import { FaSearch } from "react-icons/fa";
+import { AiFillCloseCircle } from "react-icons/ai"
 
 // core components
 import Uploader from 'components/Uploader.js';
@@ -36,7 +39,7 @@ const Login = ({ user, loading, handleLogOut }) => {
   const [photos, setPhotos] = useState([]);
   const [success, setSuccess] = useState(false);
   const [sending, setSending] = useState(false);
-  const [checking, setChecking] = useState(false);
+  const [checking, setChecking] = useState(false); // true, false, 'success', 'loading'
   const [title, setTitle] = useState('');
   const [fbid, setfbid] = useState('');
   const [checkErr, setCheckErr] = useState(false);
@@ -44,6 +47,8 @@ const Login = ({ user, loading, handleLogOut }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [answers, setAnswers] = useState(qanswers);
   const [searchValue, setSearchValue] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
+  const [searching, setSearching] = useState(null); // true, false, 'empty', 'success'
 
   const history = useHistory();
 
@@ -153,7 +158,23 @@ const Login = ({ user, loading, handleLogOut }) => {
   }
 
   const searchReport = () => {
+    setSearching(true)
+    console.log("search value ", searchValue)
 
+    firestore.collection('reports').where("link", "==", searchValue).get().then(snapshot => {
+      if (!snapshot.empty) {
+        let result = []
+        snapshot.forEach(doc => {
+          result.push({ ...doc.data(), id: doc.id })
+        })
+        setSearchResult(result);
+        setSearching('success')
+      } else {
+        setSearchResult([]);
+        setSearching('empty')
+      }
+      setSearching(false);
+    })
   }
 
   return (
@@ -199,7 +220,6 @@ const Login = ({ user, loading, handleLogOut }) => {
                         <Input disabled type="checkbox" /> <span className="text-white">Tik Tok <span className="text-muted" style={{ fontSize: 10 }}>(soon)</span></span>
                       </Label>
                     </FormGroup>
-
                   </div>
 
                   <FormGroup className=" mb-3">
@@ -217,7 +237,7 @@ const Login = ({ user, loading, handleLogOut }) => {
                       />
                       <InputGroupAddon addonType="append">
                         <Button
-                          // disabled={checking === 'loading' || checking === 'success'}
+                          disabled={searching}
                           color="primary"
                           onClick={searchReport}
                         >
@@ -227,6 +247,48 @@ const Login = ({ user, loading, handleLogOut }) => {
                       </InputGroupAddon>
                     </InputGroup>
                   </FormGroup>
+
+                  <div>
+                    <Collapse isOpened={searching !== null}>
+                      {searchResult.length ? (
+                        <ListGroup>
+                          <ListGroupItem disabled tag="a" href="#" action>
+                            <div>
+                              <div style={{ fontSize: 12, color: '#000' }} >
+                                Нийт {searchResult.length} РЕПОРТ оллоо.
+                            </div>
+                              <div style={{ fontSize: 12 }} >
+                                Нэр: {searchResult.length && searchResult[0].name ? searchResult[0].name : ''}
+                              </div>
+                              <div style={{ fontSize: 12 }} >
+                                FB-ID: {searchResult.length && searchResult[0].fbid ? searchResult[0].fbid : ''}
+                              </div>
+                            </div>
+                            <AiFillCloseCircle size={25} style={{ position: "absolute", top: 5, right: 5, cursor: "", zIndex: 10 }} />
+                          </ListGroupItem>
+                          {searchResult.length && searchResult.map((report) => {
+                            return (
+                              <ListGroupItem tag="a" href="#" action>
+                                <div>
+                                  <div>{report.reason}</div>
+                                  <div style={{ fontSize: 12 }} >{report.photos.length} зураг хавсаргасан</div>
+                                </div>
+                              </ListGroupItem>
+                            );
+                          })}
+                          {/* <ListGroupItem active tag="a" href="#" action>Cras justo odio</ListGroupItem> */}
+                        </ListGroup>
+                      ) : (
+                        <ListGroup>
+                          <ListGroupItem disabled >
+                            Аккаунттай холбоотой бүртгэл олдсонгүй
+                          </ListGroupItem>
+                        </ListGroup>
+                      )}
+
+                    </Collapse>
+                  </div>
+
                 </div>
               </Col>
               <Col lg="6">
@@ -253,7 +315,7 @@ const Login = ({ user, loading, handleLogOut }) => {
                             {
                               !user ? (
                                 <>
-                                  <h6>Эхлээд нэвтрээрэй</h6>
+                                  <h6 className="text-success">Эхлээд нэвтрээрэй</h6>
                                   <button className="loginBtn loginBtn--facebook" onClick={loginFacebook}>
                                     Facebook-р нэвтрэх
                                   </button>
@@ -267,7 +329,7 @@ const Login = ({ user, loading, handleLogOut }) => {
                             }
                             <FormGroup className="mb-1">
                               {user && checking !== 'success' ? (<div>
-                                <h6 style={{ fontSize: 12, }}>
+                                <h6 className="text-success" style={{ fontSize: 12, }}>
                                   Одоо репорлох хүнийхээ профайл линкийг хуулаад шалгаад үзээрэй!
                                 </h6>
                               </div>) : null}
@@ -298,7 +360,7 @@ const Login = ({ user, loading, handleLogOut }) => {
                               {checking === 'success' ? <>
                                 <span className="fb-account-detail">Нэр: {title} || </span>
                                 <span className="fb-account-detail">Фэйсбүүк ID: {fbid}</span> <br />
-                                <span>Профайлыг амжилттай холболоо. Тайлбар болон зургаа хавсаргаад илгээгээрэй.</span>
+                                <span className="text-success" style={{ fontSize: 12, lineHeight: 0 }} >Профайлыг амжилттай холболоо. Тайлбар болон зургаа хавсаргаад илгээгээрэй.</span>
                               </> : null}
                               {checkErr ? <>
                                 <span>Алдаа гарлаа та дахин оролдоод үзээрэй</span>
