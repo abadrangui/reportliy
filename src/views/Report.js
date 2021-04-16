@@ -104,7 +104,8 @@ const Login = ({ user, loading, handleLogOut }) => {
       name: title,
       fbid: fbid,
       moreQ: collapsed,
-      answers: collapsed ? { answers } : null
+      answers: collapsed ? { answers } : null,
+      createAt: new Date().toJSON(),
     }).then(() => {
       setSuccess(true)
     })
@@ -268,7 +269,7 @@ const Login = ({ user, loading, handleLogOut }) => {
                           </ListGroupItem>
                           {searchResult.length && searchResult.map((report) => {
                             return (
-                              <ListGroupItem tag="a" href="#" action>
+                              <ListGroupItem tag="a" action onClick={e => { e.preventDefault(); history.push(`profile/${searchResult[0].fbid}`) }} >
                                 <div>
                                   <div>{report.reason}</div>
                                   <div style={{ fontSize: 12 }} >{report.photos.length} зураг хавсаргасан</div>

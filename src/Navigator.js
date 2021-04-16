@@ -5,7 +5,7 @@ import MessengerCustomerChat from 'react-messenger-customer-chat';
 import Index from "views/Index.js";
 import Landing from "views/examples/Landing.js";
 import Login from "views/examples/Login.js";
-import Profile from "views/examples/Profile.js";
+import ExProfile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import Report from "views/Report.js";
 import FAQ from 'views/FAQ.js'
@@ -14,6 +14,7 @@ import Advice from 'views/Advice.js'
 import HelpCenter from 'views/HelpCenter.js'
 import Stories from 'views/Stories.js'
 import StoriesDetail from 'views/StoriesDetail.js'
+import Profile from 'views/Profile.js'
 import DemoNavbar from "components/Navbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 
@@ -32,7 +33,7 @@ export default ({ user, loading, handleLogOut, ...props }) => {
         <Route
           path="/profile-page"
           exact
-          render={props => <Profile {...props} />}
+          render={props => <ExProfile {...props} />}
         />
         <Route
           path="/register-page"
@@ -96,6 +97,14 @@ export default ({ user, loading, handleLogOut, ...props }) => {
           exact
           component={props =>
             <StoriesDetail
+              {...props}
+            />}
+        />
+        <Route
+          path="/profile/:fbid"
+          exact
+          component={props =>
+            <Profile
               {...props}
             />}
         />

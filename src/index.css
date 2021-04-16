@@ -83,3 +83,29 @@
   display: inline-flex;
   margin-bottom: 18px;
 }
+
+.mt-profile{ 
+  margin-top: -500px !important;
+}
+
+.justify-content-space-between{
+  justify-content: space-between;
+}
+
+.report-img{
+  width: 60px;
+}
+
+.report-item11{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.display-flex{
+  display: flex;
+}
+
+.size-12{
+  font-size: 12px;
+}
