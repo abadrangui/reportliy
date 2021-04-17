@@ -470,7 +470,7 @@ const Login = ({ user, loading, handleLogOut }) => {
                       href="#"
                       onClick={e => { e.preventDefault(); history.push('faq') }}
                     >
-                      <small>Ямар арга хэмжээ авах вэ?</small>
+                      {/* <small>Ямар арга хэмжээ авах вэ?</small> */}
                     </a>
                   </Col>
                 </Row>

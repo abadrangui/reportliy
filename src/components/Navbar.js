@@ -128,6 +128,12 @@ class DemoNavbar extends React.Component {
                       <span className="nav-link-inner--text">Холбогдох байгууллагууд</span>
                     </DropdownToggle>
                   </UncontrolledDropdown>
+                  <UncontrolledDropdown nav>
+                    <DropdownToggle nav onClick={() => history.push('/aboutus')} >
+                      <i className="ni ni-collection d-lg-none mr-1" />
+                      <span className="nav-link-inner--text">Бидний тухай</span>
+                    </DropdownToggle>
+                  </UncontrolledDropdown>
                 </Nav>
                 <Nav className="align-items-lg-center ml-lg-auto" navbar>
                   <NavItem>
