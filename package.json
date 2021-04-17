@@ -47,6 +47,7 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
     "@react-firebase/auth": "^0.2.10",
     "axios": "^0.21.1",
     "bootstrap": "4.3.1",
@@ -75,6 +76,7 @@
     "react-scripts": "4.0.3",
     "react-simple-image-viewer": "^0.0.8",
     "react-spinners": "^0.10.6",
+    "react-typing-effect": "^2.0.5",
     "reactstrap": "8.4.1",
     "redux": "^4.0.5"
   },
