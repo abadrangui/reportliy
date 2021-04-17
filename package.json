@@ -28,7 +28,7 @@
     "url": "https://github.com/creativetimofficial/argon-design-system-react/issues"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -60,7 +60,7 @@
     "global": "^4.4.0",
     "headroom.js": "0.11.0",
     "moment": "2.24.0",
-    "node-sass": "4.13.1",
+    "node-sass": "^5.0.0",
     "nouislider": "14.1.1",
     "rc-image": "^5.2.4",
     "react": "16.12.0",
