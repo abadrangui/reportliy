@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
 import {
-    Card, Button, CardImg, CardTitle, CardText, CardDeck,
+    Card, Button, Col, CardImg, CardTitle, CardText, CardDeck,
     CardSubtitle, CardBody
 } from 'reactstrap';
 // reactstrap components
@@ -12,30 +12,31 @@ import {
     Row,
 } from "reactstrap";
 import { firestore } from "../firebase";
-
+import testStroy from "./testStroy";
 class Stories extends React.Component {
     state = {
         loading: true,
-        fetchData: [],
-
+        fetchData: testStroy,
     }
 
-    componentDidMount() {
-        firestore.collection('stories').onSnapshot(snapshot => {
-            if (!snapshot.empty) {
-                let array = [];
-                snapshot.forEach(doc => {
-                    array.push({ ...doc.data(), id: doc.id })
-                })
-            }
-            this.setState({ fetchData: array, loading: false });
-        })
-    }
+    // componentDidMount() {
+    //     firestore.collection('stories').onSnapshot(snapshot => {
+    //         if (!snapshot.empty) {
+    //             let array = [];
+    //             snapshot.forEach(doc => {
+    //                 array.push({ ...doc.data(), id: doc.id })
+    //             })
+    //         }
+    //         this.setState({
+    //             fetchData: array,
+    //             loading: false
+    //         });
+    //     })
+    // }
 
     render() {
+        const { fetchData } = this.state
         const { history } = this.props;
-        const json = '{"title":"Жишээ", "image":"https://bit.ly/3tnQtVP", "text": "sample"}';
-        const obj = JSON.parse(json);
         return (
             <>
                 <main>
@@ -52,48 +53,35 @@ class Stories extends React.Component {
                         </div>
                         <Container className="pt-lg-7">
                             <Row className="justify-content-center">
-                                <h1>ТҮҮХҮҮД</h1>
+                                <h1 className="text-white">ТҮҮХҮҮД</h1>
                             </Row>
                         </Container>
                     </section>
-                    <CardDeck>
-                        <Card>
-                            <CardImg top width="100%" src={obj.image} alt="Card image cap" />
-                            <CardBody>
-                                <CardTitle tag="h5">{obj.title}</CardTitle>
-                                <CardText>{obj.text}</CardText>
-                                <Link to={{ pathname: '/storiesdetail', state: { title: obj.title, text: obj.text } }}>
-                                    <Button>
-                                        Цааш унших
-            </Button>
-                                </Link>
-                            </CardBody>
-                        </Card>
-                        <Card>
-                            <CardImg top width="100%" src={obj.image} alt="Card image cap" />
-                            <CardBody>
-                                <CardTitle tag="h5">{obj.title}</CardTitle>
-                                <CardText>{obj.text}</CardText>
-                                <Link to={{ pathname: '/storiesdetail', state: { title: obj.title, text: obj.text } }}>
-                                    <Button>
-                                        Цааш унших
-            </Button>
-                                </Link>
-                            </CardBody>
-                        </Card>
-                        <Card>
-                            <CardImg top width="100%" src={obj.image} alt="Card image cap" />
-                            <CardBody>
-                                <CardTitle tag="h5">{obj.title}</CardTitle>
-                                <CardText>{obj.text}</CardText>
-                                <Link to={{ pathname: '/storiesdetail', state: { title: obj.title, text: obj.text } }}>
-                                    <Button>
-                                        Цааш унших
-            </Button>
-                                </Link>
-                            </CardBody>
-                        </Card>
-                    </CardDeck>
+                    <Container>
+                        {fetchData.length && fetchData.map((report) => {
+                            return (
+                                <Card>
+                                    <Row>
+                                        <Col lg="4" style={{display:'flex', flexDirection: 'column' }}>
+                                            <img
+                                                className="story-image"
+                                                xtop width="50px"
+                                                src={report.image}
+                                                alt="designed by freepik.com" />
+                                                <a href="http://www.freepik.com">Designed by Freepik</a>
+                                        </Col>
+                                        
+                                        <Col lg="8">
+                                            <CardBody>
+                                                <CardTitle tag="h5" > {report.name} </CardTitle>
+                                                <CardTitle> {report.text} </CardTitle>
+                                            </CardBody>
+                                        </Col>
+                                    </Row>
+                                </Card>
+                            );
+                        })}
+                    </Container>
                 </main>
             </>
         )
