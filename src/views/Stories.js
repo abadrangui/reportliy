@@ -11,11 +11,29 @@ import {
     Container,
     Row,
 } from "reactstrap";
+import { firestore } from "../firebase";
+
 class Stories extends React.Component {
+    state = {
+        loading: true,
+        fetchData: [],
+
+    }
+
+    componentDidMount() {
+        firestore.collection('stories').onSnapshot(snapshot => {
+            if (!snapshot.empty) {
+                let array = [];
+                snapshot.forEach(doc => {
+                    array.push({ ...doc.data(), id: doc.id })
+                })
+            }
+            this.setState({ fetchData: array, loading: false });
+        })
+    }
 
     render() {
-        const { history }
-            = this.props;
+        const { history } = this.props;
         const json = '{"title":"Жишээ", "image":"https://bit.ly/3tnQtVP", "text": "sample"}';
         const obj = JSON.parse(json);
         return (
