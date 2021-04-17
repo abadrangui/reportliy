@@ -76,6 +76,7 @@
     "react-scripts": "4.0.3",
     "react-simple-image-viewer": "^0.0.8",
     "react-spinners": "^0.10.6",
+    "react-typing-effect": "^2.0.5",
     "reactstrap": "8.4.1",
     "redux": "^4.0.5"
   },

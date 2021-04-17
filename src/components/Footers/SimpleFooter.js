@@ -1,4 +1,5 @@
 import React from "react";
+import ReactTypingEffect from 'react-typing-effect';
 // reactstrap components
 import {
   Button,
@@ -22,7 +23,12 @@ class SimpleFooter extends React.Component {
             <Row className=" row-grid align-items-center mb-5">
               <Col lg="12">
                 <h3 className=" text-primary font-weight-light mb-2">
-                  Таны өгсөн мэдээлэл өөр хэн нэгнийг хамгаалах болно.
+                  <ReactTypingEffect
+                    text={["Таны өгсөн мэдээлэл өөр хэн нэгнийг хамгаалах болно."]}
+                    speed={70}
+                    eraseSpeed={70}
+                  />
+
                 </h3>
                 {/* <h4 className=" mb-0 font-weight-light">
                   Бэлгийн хүчирхийллийг үл тэвчинэ.
