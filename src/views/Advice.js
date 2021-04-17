@@ -8,6 +8,8 @@ import {
   Col,
 } from "reactstrap";
 import Chip from '@material-ui/core/Chip';
+import ClipLoader from "react-spinners/ClipLoader";
+
 import { firestore } from "../firebase";
 
 function arrayRemove(arr, value) {
@@ -47,6 +49,7 @@ export default ({ ...props }) => {
 
   const [advices, setAdvices] = useState([]);
   const [checked, setChecked] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -59,6 +62,7 @@ export default ({ ...props }) => {
           array.push({ ...doc.data(), id: doc.id })
         })
         setAdvices(array);
+        setLoading(false);
       }
     })
 
@@ -100,21 +104,21 @@ export default ({ ...props }) => {
             <Card className="card-profile shadow mt-profile">
               <div className="px-4">
                 <Row
-                  className="order-lg-3 text-lg-right align-self-lg-center"
+                  className="d-flex justify-content-center"
                   lg="4"
                 >
-                  <div className="card-profile-stats d-flex justify-content-center">
+                  <div className=" d-flex justify-content-center">
                     <h2>Зөвлөгөө</h2>
                   </div>
                 </Row>
-                <Row className="order-lg-1 py-3" lg="4">
+                <Row className="py-3 d-flex justify-content-center" lg="4">
                   {category.map((item, index) => {
                     return (
                       <Chip
                         key={index}
                         variant={checked === index ? 'default' : 'outlined'}
                         color="primary"
-                        className="mr-2"
+                        className="mr-2 mb-1"
                         label={item.name}
                         onClick={() => { console.log("index ", index); setChecked(index) }}
                       />
@@ -123,6 +127,7 @@ export default ({ ...props }) => {
                 </Row>
                 <div className=" py-1 border-top text-center">
                   <Row>
+                    {loading && <ClipLoader />}
                     {advices.length && advices.filter(item => item.category === (checked + 1)).sort(compare).map((data, index) => {
                       return (
                         <>
